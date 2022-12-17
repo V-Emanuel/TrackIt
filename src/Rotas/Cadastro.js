@@ -47,12 +47,12 @@ return (
                 onChange={e => setUser({ ...user, name: e.target.value })}
                 required>
             </input>
-            <inputp
+            <input
                 type="url"
                 placeholder="foto"
                 onChange={e => setUser({ ...user, image: e.target.value })}
                 required>
-            </inputp>
+            </input>
             <button><p>Cadastrar</p></button>
         </form>
         <Link to="/"><p>Já tem uma conta? Faça Login!</p></Link>

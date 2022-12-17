@@ -2,16 +2,25 @@ import { React, useContext, useState } from "react";
 import styled from "styled-components";
 import Topo from "../Components/Topo";
 import HabitContext from "../contexts/HabitContext";
+import Footer from "../Components/Footer";
 
 export default function Habitos() {
 
     const [dayColor, setDayColor] = useState(false);
-    const [showAdd, setShowAdd] = useState(false);
-    const week = ["D", "S", "T", "Q", "Q", "S", "S"];
+    const [showAdd, setShowAdd] = useState(true);
+    const week = [
+        { id: 0, name: "D" },
+        { id: 1, name: "S" },
+        { id: 2, name: "T" },
+        { id: 3, name: "Q" },
+        { id: 4, name: "Q" },
+        { id: 5, name: "S" },
+        { id: 6, name: "S" },
+      ];
     const { habit, setHabit } = useContext(HabitContext);
     return (
         <>
-            <Topo></Topo>
+            <Topo/>
             <Menu>
                 <Tittle>
                     <p className="tittleAdd">Meus Hábitos</p>
@@ -26,7 +35,7 @@ export default function Habitos() {
                             required>
                         </input>
                         <WeekDays>
-                            {week.map((item) => <Day cor={dayColor}><p>{item}</p></Day>)}
+                            {week.map((item) => <Day cor={dayColor}><p>{item.name}</p></Day>)}
                         </WeekDays>
                         <Buttons>
                             <div className="cancel">
@@ -41,7 +50,7 @@ export default function Habitos() {
                 <p className="initialDescrition">Você não tem nenhum hábito cadastrado ainda.
                     Adicione um hábito para começar a trackear!</p>
             </Menu>
-
+            <Footer/>
         </>
     );
 }
