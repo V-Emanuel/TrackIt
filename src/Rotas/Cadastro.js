@@ -9,6 +9,7 @@ import { urlAPI, urlRegister } from "../Constants/API";
 export default function Rota() {
 
     const { user, setUser } = useContext(UserContext);
+    const navigate = useNavigate();
 
     function DataRegister(e) {
         e.preventdefault();
@@ -18,6 +19,7 @@ export default function Rota() {
             name: user.name,
             image: user.image
         })  
+        reqRegister.then(() => navigate("/habitos"))
     }
 
 return (
@@ -45,13 +47,12 @@ return (
                 onChange={e => setUser({ ...user, name: e.target.value })}
                 required>
             </input>
-            <input
-                value={user.image}
+            <inputp
                 type="url"
                 placeholder="foto"
                 onChange={e => setUser({ ...user, image: e.target.value })}
                 required>
-            </input>
+            </inputp>
             <button><p>Cadastrar</p></button>
         </form>
         <Link to="/"><p>Já tem uma conta? Faça Login!</p></Link>

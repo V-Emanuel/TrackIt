@@ -8,6 +8,7 @@ import { urlAPI, urlLogin } from "../Constants/API";
 
 export default function Rota() {
 
+    const navigate = useNavigate();
     const { user, setUser } = useContext(UserContext)
 
     function DataLogin(e) {
@@ -16,6 +17,7 @@ export default function Rota() {
             email: user.email,
             password: user.password
         })
+        reqLogin.then(() => navigate("/habitos"))
     }
 
     return (
