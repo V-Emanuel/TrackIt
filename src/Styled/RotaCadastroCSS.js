@@ -38,6 +38,9 @@ export const Body = styled.div`
             padding-left: 20px;
             color: #DBDBDB;
         }
+        &:hover{
+            background-color: #DBDBDB;
+        }
     }
     button{
         width: 303px;
@@ -70,6 +73,5 @@ export const Body = styled.div`
         text-align: center;
         text-decoration-line: underline;
         color: #52B6FF;
-
     }
 `;
