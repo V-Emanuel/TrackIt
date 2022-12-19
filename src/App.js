@@ -4,7 +4,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Rota from "./Rotas/Rota";
 import Cadastro from "./Rotas/Cadastro";
 import Habitos from "./Rotas/Habitos";
-
+import Hoje from "./Rotas/Hoje";
 import UserContext from "./contexts/UserContext";
 import HabitContext from "./contexts/HabitContext";
 
@@ -31,6 +31,7 @@ export default function App() {
             <Route path="/" element={<Rota />} />
             <Route path="/cadastro" element={<Cadastro />} />
             <Route path="/habitos" element={<Habitos />} />
+            <Route path="/hoje" element={<Hoje/>} />
           </Routes>
         </BrowserRouter>
         </HabitContext.Provider>

@@ -3,11 +3,16 @@ import styled from "styled-components";
 import Topo from "../Components/Topo";
 import HabitContext from "../contexts/HabitContext";
 import Footer from "../Components/Footer";
+import { Menu } from "../Styled/Menu";
 
 export default function Habitos() {
 
+    const { habit, setHabit } = useContext(HabitContext);
     const [dayColor, setDayColor] = useState(false);
-    const [showAdd, setShowAdd] = useState(true);
+    const [showAdd, setShowAdd] = useState(false);
+    const [days, setDays] = useState([]);
+    const [idDays, setIdDays] = useState([]);
+    
     const week = [
         { id: 0, name: "D" },
         { id: 1, name: "S" },
@@ -16,15 +21,26 @@ export default function Habitos() {
         { id: 4, name: "Q" },
         { id: 5, name: "S" },
         { id: 6, name: "S" },
-      ];
-    const { habit, setHabit } = useContext(HabitContext);
+    ];
+    
+    function Selected(name, idDay) {
+        const clicked = days.includes(name)
+        if (!clicked){
+            setDays([...days, name])
+            setIdDays([...idDays, idDay])
+        } else {
+            setDays(days.filter(a => a !== name))
+            setIdDays(idDays.filter(a => a !== idDay))
+        }
+    }
+    
     return (
         <>
-            <Topo/>
+            <Topo />
             <Menu>
                 <Tittle>
                     <p className="tittleAdd">Meus Hábitos</p>
-                    <ion-icon name="add-circle"></ion-icon>
+                    <ion-icon name="add-circle" onClick={() => { setShowAdd(!showAdd)}}></ion-icon>
                 </Tittle>
                 <Add show={showAdd}>
                     <form>
@@ -35,7 +51,11 @@ export default function Habitos() {
                             required>
                         </input>
                         <WeekDays>
-                            {week.map((item) => <Day cor={dayColor}><p>{item.name}</p></Day>)}
+                            {week.map((item) => <div
+                                className={` day ${idDays.includes(item.id) ? "selectedDay" : "notSelectedDay"}`}
+                                onClick={() => { Selected(item.name, item.id)}}>
+                                <p>{item.name}</p>
+                            </div>)}
                         </WeekDays>
                         <Buttons>
                             <div className="cancel">
@@ -47,33 +67,32 @@ export default function Habitos() {
                         </Buttons>
                     </form>
                 </Add>
-                <p className="initialDescrition">Você não tem nenhum hábito cadastrado ainda.
-                    Adicione um hábito para começar a trackear!</p>
+                <Habit>
+                    <h1 className="habitName">Levar jorgin na Creche</h1>
+                    <WeekDays>
+                        {week.map((item) => <Day cor={dayColor}><p>{item.name}</p></Day>)}
+                    </WeekDays>
+                </Habit>
+                <NoHabits>Você não tem nenhum hábito cadastrado ainda.
+                    Adicione um hábito para começar a trackear!</NoHabits>
             </Menu>
-            <Footer/>
+            <Footer />
         </>
     );
 }
-const Menu = styled.div`
+
+const NoHabits = styled.p`
     width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background-color: #E5E5E5;
-    .initialDescrition{
-        width: 100%;
-        font-family: 'Lexend Deca';
-        font-style: normal;
-        font-weight: 400;
-        font-size: 18px;
-        line-height: 22px;
-        color: #666666;
-        word-wrap: wrap;
-        box-sizing: border-box;
-        padding-left: 20px;
-        padding-right: 20px;
-    }
+    font-family: 'Lexend Deca';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 18px;
+    line-height: 22px;
+    color: #666666;
+    word-wrap: wrap;
+    box-sizing: border-box;
+    padding-left: 20px;
+    padding-right: 20px;
 `;
 const Tittle = styled.div`
     width: 100%;
@@ -125,28 +144,64 @@ const Add = styled.div`
     }
 
 `;
-const WeekDays = styled.div`
-    display: flex;
-`;
-const Day = styled.div`
-    width: 30px;
-    height: 30px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: ${props => props.cor ? "#CFCFCF" : "#FFFFFF"};
-    border: 1px solid #D5D5D5;
+const Habit = styled.div`
+    width: 340px;
+    height: 91px;
+    background: #FFFFFF;
     border-radius: 5px;
-    margin-right: 4px;
-    p{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    box-sizing: border-box;
+    padding: 18px;
+    margin-top: 10px;
+    h1{
         font-family: 'Lexend Deca';
         font-style: normal;
         font-weight: 400;
         font-size: 20px;
         line-height: 25px;
-        color: ${props => props.cor ? "#FFFFFF" : "#DBDBDB"};
+        color: #666666;
+        margin-bottom: 5px;
     }
-
+`;
+const WeekDays = styled.div`
+    display: flex;
+    .day{
+        width: 30px;
+        height: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 1px solid #D5D5D5;
+        border-radius: 5px;
+        margin-right: 4px;
+        p{
+            font-family: 'Lexend Deca';
+            font-style: normal;
+            font-weight: 400;
+            font-size: 20px;
+            line-height: 25px;
+        }
+        &:hover{
+            cursor: pointer;
+        }
+    }
+    .selectedDay{
+        background-color: #CFCFCF;
+        p{
+            color:#FFFFFF;
+        }
+    }
+    .notSelectedDay{
+        background-color: #FFFFFF;
+        p{
+            color:#DBDBDB;
+        }
+    }
+`;
+const Day = styled.div`
+    
 `;
 const Buttons = styled.div`
     display: flex;

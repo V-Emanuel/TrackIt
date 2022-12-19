@@ -4,7 +4,7 @@ import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 
 export default function Footer() {
 
-    const [percentage, serPescentage] = React.useState(75);
+    const [percentage, setPercentage] = React.useState(75);
     return (
         <>
             <FooterDiv>
