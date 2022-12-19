@@ -17,11 +17,13 @@ export default function Rota() {
     const [buttonText, setButtonText] = useState(<p>{"Entrar"}</p>);
 
     function DataLogin(e) {
-        e.preventdefault();
+        e.preventDefault();
         const body = { email, password}
-        const reqLogin = axios.post("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/login", body)
-        reqLogin.then(() => navigate("/habitos"))
-        reqLogin.catch((err) => {
+        const promise = axios.post(`${urlAPI}${urlLogin}`, body)
+        promise.then((res) => {
+            navigate("/habitos")
+            console.log(res)})
+        promise.catch((err) => {
             alert(err.response.data.message)
             setUsage(false)
 
@@ -62,7 +64,7 @@ export default function Rota() {
                     required
                     disabled={usage}>
                 </input>
-                <button type="submit">{buttonText}</button>
+                <button type="submit"  disabled={usage}>{buttonText}</button>
             </form>
             <Link to="/cadastro"><p>Não tem uma conta? Cadastre-se!</p></Link>
         </Body>

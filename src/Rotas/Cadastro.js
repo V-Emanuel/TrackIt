@@ -19,15 +19,7 @@ export default function Rota() {
     const [buttonText, setButtonText] = useState(<p>{"Cadastrar"}</p>);
 
     function DataRegister(e) {
-        e.preventdefault();
-        const body = { email, name, image, password }
-        const reqRegister = axios.post("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/sign-up", body)
-        reqRegister.then(() => navigate("/habitos"))
-        reqRegister.catch((err) => {
-            alert(err.response.data.message)
-            setUsage(false)
-            setButtonText(<p>{"Cadastrar"}</p>)
-        })
+        e.preventDefault();
         setButtonText(
             <ThreeDots
                 height="80"
@@ -41,6 +33,17 @@ export default function Rota() {
             />)
         setUsage(true)
         setUser({email: email, name: name, password: password, image: image})
+        const body = { email, name, image, password }
+        const promise = axios.post(`${urlAPI}${urlRegister}`, body)
+        promise.then((res) => {
+            navigate("/habitos")
+            console.log(res)})
+        promise.catch((err) => {
+            alert(err.response.data.message)
+            setUsage(false)
+            setButtonText(<p>{"Cadastrar"}</p>)
+        })
+
     }
 
 
@@ -80,7 +83,7 @@ export default function Rota() {
                     disabled={usage}>
                 </input>
                 <button type="submit" disabled={usage}>
-                    <p>{buttonText}</p>
+                    {buttonText}
                 </button>
             </form>
             <Link to="/"><p>Já tem uma conta? Faça Login!</p></Link>
