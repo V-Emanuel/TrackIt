@@ -36,6 +36,7 @@ const Header = styled.header`
     img{
         width: 51px;
         height: 51px;
+        border-radius: 98px;
     }
 ;
 `;

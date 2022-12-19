@@ -3,42 +3,66 @@ import axios from "axios";
 import { Logo, Body } from "../Styled/RotaCadastroCSS";
 import logo from "../assets/img/logo.png";
 import { useParams, useNavigate, Link } from "react-router-dom";
-import UserContext from "../contexts/UserContext";
 import { urlAPI, urlLogin } from "../Constants/API";
+import { ThreeDots } from 'react-loader-spinner';
+import UserContext from "../contexts/UserContext";
 
 export default function Rota() {
 
+    const {user, setUser} = useContext(UserContext);
+    const [password, setPassword] = useState("")
+    const [email, setEmail] = useState("")
     const navigate = useNavigate();
-    const { user, setUser } = useContext(UserContext)
+    const [usage, setUsage] = useState(false);
+    const [buttonText, setButtonText] = useState(<p>{"Entrar"}</p>);
 
     function DataLogin(e) {
         e.preventdefault();
-        const reqLogin = axios.post(`${urlAPI}${urlLogin}`, {
-            email: user.email,
-            password: user.password
-        })
+        const body = { email, password}
+        const reqLogin = axios.post("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/login", body)
         reqLogin.then(() => navigate("/habitos"))
+        reqLogin.catch((err) => {
+            alert(err.response.data.message)
+            setUsage(false)
+
+        })
+        setUsage(true)
+        setButtonText(
+            <ThreeDots
+                height="80"
+                width="51"
+                radius="9"
+                color="#ffffff"
+                ariaLabel="three-dots-loading"
+                wrapperStyle={{}}
+                wrapperClassName=""
+                visible={true}
+            />)
+        setUser({email: email, password: password})
     }
+
 
     return (
         <Body>
             <Logo src={logo}></Logo>
             <form onSubmit={DataLogin}>
                 <input
-                    value={user.email}
+                    value={email}
                     type="email"
                     placeholder="email"
-                    onChange={e => setUser({ ...user, email: e.target.value })}
-                    required>
+                    onChange={e => setEmail(e.target.value )}
+                    required
+                    disabled={usage}>
                 </input>
                 <input
-                    value={user.password}
+                    value={password}
                     type="password"
                     placeholder="senha"
-                    onChange={e => setUser({ ...user, password: e.target.value })}
-                    required>
+                    onChange={e => setPassword(e.target.value )}
+                    required
+                    disabled={usage}>
                 </input>
-                <button><p>Entrar</p></button>
+                <button type="submit">{buttonText}</button>
             </form>
             <Link to="/cadastro"><p>Não tem uma conta? Cadastre-se!</p></Link>
         </Body>

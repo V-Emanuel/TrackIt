@@ -8,7 +8,6 @@ import { Menu } from "../Styled/Menu";
 export default function Habitos() {
 
     const { habit, setHabit } = useContext(HabitContext);
-    const [dayColor, setDayColor] = useState(false);
     const [showAdd, setShowAdd] = useState(false);
     const [days, setDays] = useState([]);
     const [idDays, setIdDays] = useState([]);
@@ -70,7 +69,7 @@ export default function Habitos() {
                 <Habit>
                     <h1 className="habitName">Levar jorgin na Creche</h1>
                     <WeekDays>
-                        {week.map((item) => <Day cor={dayColor}><p>{item.name}</p></Day>)}
+                        {week.map((item) => <div className="day notSelectedDay"><p>{item.name}</p></div>)}
                     </WeekDays>
                 </Habit>
                 <NoHabits>Você não tem nenhum hábito cadastrado ainda.
