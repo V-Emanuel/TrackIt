@@ -8,7 +8,7 @@ import { Menu } from "../Styled/Menu";
 export default function Hoje() {
     return (
         <>
-        <Topo/>
+        <Topo data-test="header"/>
         <Menu>
             <Title>
                 <h1>Domingão, 17/05</h1>
@@ -23,7 +23,7 @@ export default function Hoje() {
                 <div><ion-icon name="checkmark-outline"></ion-icon></div>
             </Habit>
         </Menu>
-        <Footer/>
+        <Footer data-test="footer"/>
         </>
     );
 }
