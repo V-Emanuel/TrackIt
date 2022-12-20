@@ -6,10 +6,12 @@ import { useParams, useNavigate, Link } from "react-router-dom";
 import { urlAPI, urlLogin } from "../Constants/API";
 import { ThreeDots } from 'react-loader-spinner';
 import UserContext from "../contexts/UserContext";
+import TokenContext from "../contexts/TokenContext";
 
 export default function Rota() {
 
-    const {user, setUser} = useContext(UserContext);
+    const { user, setUser } = useContext(UserContext);
+    const { token, setToken } = useContext(TokenContext);
     const [password, setPassword] = useState("")
     const [email, setEmail] = useState("")
     const navigate = useNavigate();
@@ -18,15 +20,16 @@ export default function Rota() {
 
     function DataLogin(e) {
         e.preventDefault();
-        const body = { email, password}
+        const body = { email, password }
         const promise = axios.post(`${urlAPI}${urlLogin}`, body)
         promise.then((res) => {
             navigate("/habitos")
-            console.log(res)})
+            setToken(res.data.token)
+        })
         promise.catch((err) => {
             alert(err.response.data.message)
             setUsage(false)
-
+            setButtonText(<p>{"Entrar"}</p>)
         })
         setUsage(true)
         setButtonText(
@@ -40,7 +43,7 @@ export default function Rota() {
                 wrapperClassName=""
                 visible={true}
             />)
-        setUser({email: email, password: password})
+        setUser({ email: email, password: password })
     }
 
 
@@ -52,7 +55,7 @@ export default function Rota() {
                     value={email}
                     type="email"
                     placeholder="email"
-                    onChange={e => setEmail(e.target.value )}
+                    onChange={e => setEmail(e.target.value)}
                     required
                     disabled={usage}>
                 </input>
@@ -60,11 +63,11 @@ export default function Rota() {
                     value={password}
                     type="password"
                     placeholder="senha"
-                    onChange={e => setPassword(e.target.value )}
+                    onChange={e => setPassword(e.target.value)}
                     required
                     disabled={usage}>
                 </input>
-                <button type="submit"  disabled={usage}>{buttonText}</button>
+                <button type="submit" disabled={usage}>{buttonText}</button>
             </form>
             <Link to="/cadastro"><p>Não tem uma conta? Cadastre-se!</p></Link>
         </Body>

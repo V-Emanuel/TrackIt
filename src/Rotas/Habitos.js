@@ -1,16 +1,59 @@
-import { React, useContext, useState } from "react";
+import { React, useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 import Topo from "../Components/Topo";
 import HabitContext from "../contexts/HabitContext";
+import TokenContext from "../contexts/TokenContext";
 import Footer from "../Components/Footer";
 import { Menu } from "../Styled/Menu";
+import axios from "axios";
 
 export default function Habitos() {
 
+    const { token, setToken } = useContext(TokenContext);
     const { habit, setHabit } = useContext(HabitContext);
     const [showAdd, setShowAdd] = useState(false);
-    const [days, setDays] = useState([]);
     const [idDays, setIdDays] = useState([]);
+    const [renderHabit, setRenderHabit] = useState(<spam></spam>);
+    const [renderHabits, setRenderHabits] = useState([]);
+    const [apiHabit, setApiHabit] = useState([]);
+
+    function DataHabit(e){
+        const URL = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits";
+        e.preventDefault();
+        setHabit({...habit, days: idDays});
+        const config = {
+            headers: {Authorization: `Bearer ${token}`}
+        }
+        const requisicao = axios.post(URL,{
+            name: habit.name,
+            days: idDays
+        })
+
+        useEffect( () => {
+            const promise = axios.get(URL, config);
+            promise.then((res) => {
+                setApiHabit(res.data);
+                console.log(res.data);
+            });
+            promise.catch((err) => {
+                alert(err.response.data.message)
+            });
+        },[])
+        SaveHabit(apiHabit)
+    }
+
+    function SaveHabit(hab){
+        
+        setRenderHabit(
+        <><Habit>
+            <h1 className="habitName">hab.name</h1>
+            <WeekDays>
+                {hab.map((item) => <div className="day notSelectedDay"><p>{item.days}</p></div>)}
+            </WeekDays>
+        </Habit></>
+        )
+        setRenderHabits({...renderHabits, renderHabit})
+    }
     
     const week = [
         { id: 0, name: "D" },
@@ -22,13 +65,11 @@ export default function Habitos() {
         { id: 6, name: "S" },
     ];
     
-    function Selected(name, idDay) {
-        const clicked = days.includes(name)
+    function Selected(idDay) {
+        const clicked = idDays.includes(idDay)
         if (!clicked){
-            setDays([...days, name])
             setIdDays([...idDays, idDay])
         } else {
-            setDays(days.filter(a => a !== name))
             setIdDays(idDays.filter(a => a !== idDay))
         }
     }
@@ -42,7 +83,7 @@ export default function Habitos() {
                     <ion-icon name="add-circle" onClick={() => { setShowAdd(!showAdd)}}></ion-icon>
                 </Tittle>
                 <Add show={showAdd}>
-                    <form>
+                    <form onSubmit={DataHabit}>
                         <input
                             type="text"
                             placeholder="nome do hábito"
@@ -52,26 +93,21 @@ export default function Habitos() {
                         <WeekDays>
                             {week.map((item) => <div
                                 className={` day ${idDays.includes(item.id) ? "selectedDay" : "notSelectedDay"}`}
-                                onClick={() => { Selected(item.name, item.id)}}>
+                                onClick={() => { Selected(item.id)}}>
                                 <p>{item.name}</p>
                             </div>)}
                         </WeekDays>
                         <Buttons>
-                            <div className="cancel">
+                            <button className="cancel">
                                 <p>Cancelar</p>
-                            </div>
-                            <div className="save">
+                            </button>
+                            <button type="submit" className="save">
                                 <p>Salvar</p>
-                            </div>
+                            </button>
                         </Buttons>
                     </form>
+                    <>{renderHabits}</>
                 </Add>
-                <Habit>
-                    <h1 className="habitName">Levar jorgin na Creche</h1>
-                    <WeekDays>
-                        {week.map((item) => <div className="day notSelectedDay"><p>{item.name}</p></div>)}
-                    </WeekDays>
-                </Habit>
                 <NoHabits>Você não tem nenhum hábito cadastrado ainda.
                     Adicione um hábito para começar a trackear!</NoHabits>
             </Menu>
@@ -199,14 +235,11 @@ const WeekDays = styled.div`
         }
     }
 `;
-const Day = styled.div`
-    
-`;
 const Buttons = styled.div`
     display: flex;
     justify-content: flex-end;
     margin-top: 24px;
-    div{
+    button{
         width: 84px;
         height: 35px;
         background: #52B6FF;
@@ -214,6 +247,7 @@ const Buttons = styled.div`
         display: flex;
         align-items: center;
         justify-content: center;
+        border-color: #87CEEB;
         &:hover{
             cursor: pointer;
         }

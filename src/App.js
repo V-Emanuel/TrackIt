@@ -7,6 +7,7 @@ import Habitos from "./Rotas/Habitos";
 import Hoje from "./Rotas/Hoje";
 import UserContext from "./contexts/UserContext";
 import HabitContext from "./contexts/HabitContext";
+import TokenContext from "./contexts/TokenContext";
 
 export default function App() {
 
@@ -21,11 +22,14 @@ export default function App() {
     days: []
   })
 
+  const [token, setToken] = useState("");
+
 
   return (
     <Body>
       <UserContext.Provider value={{ user, setUser}}>
       <HabitContext.Provider value={{habit, setHabit}}>
+        <TokenContext.Provider value={{token, setToken}}>
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Rota />} />
@@ -34,6 +38,7 @@ export default function App() {
             <Route path="/hoje" element={<Hoje/>} />
           </Routes>
         </BrowserRouter>
+        </TokenContext.Provider>
         </HabitContext.Provider>
       </UserContext.Provider>
     </Body>
