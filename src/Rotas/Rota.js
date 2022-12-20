@@ -52,6 +52,7 @@ export default function Rota() {
             <Logo src={logo}></Logo>
             <form onSubmit={DataLogin}>
                 <input
+                    data-test="email-input"
                     value={email}
                     type="email"
                     placeholder="email"
@@ -60,6 +61,7 @@ export default function Rota() {
                     disabled={usage}>
                 </input>
                 <input
+                    data-test="password-input"
                     value={password}
                     type="password"
                     placeholder="senha"
@@ -67,9 +69,9 @@ export default function Rota() {
                     required
                     disabled={usage}>
                 </input>
-                <button type="submit" disabled={usage}>{buttonText}</button>
+                <button type="submit" disabled={usage} data-test="login-btn">{buttonText}</button>
             </form>
-            <Link to="/cadastro"><p>Não tem uma conta? Cadastre-se!</p></Link>
+            <Link to="/cadastro" data-test="signup-link"><p>Não tem uma conta? Cadastre-se!</p></Link>
         </Body>
     );
 }
