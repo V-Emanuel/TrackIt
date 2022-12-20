@@ -52,6 +52,7 @@ export default function Rota() {
             <Logo src={logo}></Logo>
             <form onSubmit={DataRegister}>
                 <input
+                    data-test="email-input"
                     value={email}
                     type="email"
                     placeholder="email"
@@ -60,6 +61,7 @@ export default function Rota() {
                     disabled={usage}>
                 </input>
                 <input
+                    data-test="password-input"
                     value={password}
                     type="password"
                     placeholder="senha"
@@ -68,6 +70,7 @@ export default function Rota() {
                     disabled={usage}>
                 </input>
                 <input
+                    data-test="user-name-input"
                     value={name}
                     type="text"
                     placeholder="nome"
@@ -76,17 +79,18 @@ export default function Rota() {
                     disabled={usage}>
                 </input>
                 <input
+                    data-test="user-image-input"
                     type="url"
                     placeholder="foto"
                     onChange={e => setImage(e.target.value )}
                     required
                     disabled={usage}>
                 </input>
-                <button type="submit" disabled={usage}>
+                <button type="submit" disabled={usage} data-test="signup-btn">
                     {buttonText}
                 </button>
             </form>
-            <Link to="/"><p>Já tem uma conta? Faça Login!</p></Link>
+            <Link to="/" data-test="login-link"><p>Já tem uma conta? Faça Login!</p></Link>
         </Body>
     );
 }
