@@ -10,8 +10,8 @@ export default function Footer() {
     return (
         <>
             <FooterDiv >
-                <p onClick = {() => navigate("/habitos")}>Hábitos</p>
-                <div onClick = {() => navigate("/hoje")}>
+                <p data-test="habit-link" onClick = {() => navigate("/habitos")}>Hábitos</p>
+                <div data-test="today-link" onClick = {() => navigate("/hoje")}>
                 <CircularProgressbar
                     value={percentage}
                     text={`${percentage}%`}
@@ -25,7 +25,7 @@ export default function Footer() {
                     })}
                 />
                 </div>
-                <p>Histórico</p>
+                <p data-test="history-link">Histórico</p>
             </FooterDiv>
         </>
     );
