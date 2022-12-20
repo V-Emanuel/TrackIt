@@ -76,32 +76,33 @@ export default function Habitos() {
     
     return (
         <>
-            <Topo />
+            <Topo data-test="header"/>
             <Menu>
                 <Tittle>
                     <p className="tittleAdd">Meus Hábitos</p>
-                    <ion-icon name="add-circle" onClick={() => { setShowAdd(!showAdd)}}></ion-icon>
+                    <ion-icon name="add-circle" data-test="habit-create-btn" onClick={() => { setShowAdd(!showAdd)}}></ion-icon>
                 </Tittle>
-                <Add show={showAdd}>
+                <Add data-test="habit-create-container" show={showAdd}>
                     <form onSubmit={DataHabit}>
                         <input
+                            data-test="habit-name-input"
                             type="text"
                             placeholder="nome do hábito"
                             onChange={e => setHabit({ ...habit, name: e.target.value })}
                             required>
                         </input>
                         <WeekDays>
-                            {week.map((item) => <div
+                            {week.map((item) => <div data-test="habit-day"
                                 className={` day ${idDays.includes(item.id) ? "selectedDay" : "notSelectedDay"}`}
                                 onClick={() => { Selected(item.id)}}>
                                 <p>{item.name}</p>
                             </div>)}
                         </WeekDays>
                         <Buttons>
-                            <button className="cancel">
+                            <button data-test="habit-create-cancel-btn" className="cancel">
                                 <p>Cancelar</p>
                             </button>
-                            <button type="submit" className="save">
+                            <button data-test="habit-create-save-btn" type="submit" className="save">
                                 <p>Salvar</p>
                             </button>
                         </Buttons>
@@ -111,7 +112,7 @@ export default function Habitos() {
                 <NoHabits>Você não tem nenhum hábito cadastrado ainda.
                     Adicione um hábito para começar a trackear!</NoHabits>
             </Menu>
-            <Footer />
+            <Footer data-test="menu"/>
         </>
     );
 }
